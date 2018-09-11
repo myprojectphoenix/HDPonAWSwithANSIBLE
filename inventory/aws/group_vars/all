@@ -2,14 +2,14 @@
 cloud_config:
   region: 'eu-west-1'
   zone: 'eu-west-1a'
-  vpc_name: "{{ cluster_name }}-vpc"
+  vpc_name: "{{ phoenix-horton }}-vpc"
   vpc_cidr: '10.0.0.0/16'
-  subnet_name: '{{ cluster_name }}-subnet'
+  subnet_name: '{{ phoenix-horton }}-subnet'
   subnet_cidr: '10.0.10.0/24'
   internet_gateway: true                                           # Only set to false if using local repos (node will be without Internet access)
-  admin_username: ubuntu                                           # Depends on the image, usually can be set to ubuntu, centos or ec2-user
+  admin_username: centos                                           # Depends on the image, usually can be set to ubuntu, centos or ec2-user
   ssh:
-    keyname: "{{ cluster_name }}-key"
+    keyname: "{{ phoenix-horton }}-key"
     publickey: '~/.ssh/id_rsa.pub'
     privatekey: '~/.ssh/id_rsa'
   security_groups:
@@ -26,7 +26,7 @@ cloud_config:
 nodes:
   - host_group: "hdp-master"
     count: 1
-    image: ami-2a7d75c0                                            # Ubuntu 16.04 AMI in eu-west-1 only (change this ID if using a different region)
+    image: ami-6e28b517                                             # CentOS 7 in EU West1( Ireland)
     type: r4.xlarge
     public_ip: true
     security_groups: default_cluster_access,ambari_access
@@ -37,7 +37,7 @@ nodes:
 
   - host_group: "hdp-slave"
     count: 3
-    image: ami-2a7d75c0                                            # Ubuntu 16.04 AMI in eu-west-1 only (change this ID if using a different region)
+    image: ami-6e28b517                                              # CentOS 7 in EU West1( Ireland)
     type: m5.xlarge
     public_ip: true
     security_groups: default_cluster_access
@@ -47,8 +47,8 @@ nodes:
       size: 15
 
   - host_group: "hdp-edge"
-    count: 0
-    image: ami-2a7d75c0                                            # Ubuntu 16.04 AMI in eu-west-1 only (change this ID if using a different region)
+    count: 1
+    image: ami-6e28b517                                            # CentOS 7 in EU West1( Ireland)
     type: m4.large
     public_ip: true
     security_groups: default_cluster_access
